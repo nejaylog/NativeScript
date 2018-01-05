@@ -1,0 +1,39 @@
+<ActionBar title="About Us" class="action-bar">
+</ActionBar>
+<RadSideDrawer #drawerComponent tkToggleNavButton showOverNavigation="true">
+    <ScrollView tkDrawerContent class="sidedrawer-left">
+        <StackLayout horizontalAlign="left">
+            <drawer-content></drawer-content>
+        </StackLayout>
+    </ScrollView>
+    <ScrollView orientation="vertical" tkMainContent class="page">
+        <StackLayout class="m-5">
+            <StackLayout class="m-5">
+                <StackLayout class="p-10 border">
+                    <Label class="h2" text="Our History"></Label>
+                    <Label class="body"
+                           text="Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong. Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us."
+                           textWrap="true"></Label>
+                    <Label class="body"
+                           text="The restaurant traces its humble beginnings to The Frying Pan, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan."
+                           textWrap="true"></Label>
+                </StackLayout>
+            </StackLayout>
+            <Label class="m-5 h2" text="Corporate Leadership"></Label>
+            <ListView [items]="leaders" class="m-5" *ngIf="leaders">
+                <ng-template let-leader="item">
+                    <GridLayout class="p-10" rows="*" columns="auto, *">
+                        <StackLayout class="m-5" col="0" orientation="vertical" verticalAlignment="center">
+                            <Image class="img-circle" [src]="BaseURL + leader.image"></Image>
+                        </StackLayout>
+                        <StackLayout class="m-5" col="1" orientation="vertical">
+                            <Label class="h2" [text]="leader.name"></Label>
+                            <Label class="h3" [text]="leader.designation"></Label>
+                            <Label class="body" [text]="leader.description" textWrap="true"></Label>
+                        </StackLayout>
+                    </GridLayout>
+                </ng-template>
+            </ListView>
+        </StackLayout>
+    </ScrollView>
+</RadSideDrawer>
