@@ -74,9 +74,9 @@ export class FavoritesComponent extends DrawerPage implements OnInit {
 
         var leftItem = swipeView.getViewById('mark-view');
         var rightItem = swipeView.getViewById('delete-view');
-        swipeLimits.left = leftItem.getMeasuredWidth();
-        swipeLimits.right = rightItem.getMeasuredWidth();
-        swipeLimits.threshold = leftItem.getMeasuredWidth() / 2;
+        // swipeLimits.left = leftItem.getMeasuredWidth();
+        // swipeLimits.right = rightItem.getMeasuredWidth();
+        // swipeLimits.threshold = leftItem.getMeasuredWidth() / 2;
     }
 
     public onSwipeCellFinished(args: ListViewEventData) {
