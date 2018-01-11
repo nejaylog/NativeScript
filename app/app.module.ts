@@ -24,6 +24,7 @@ import {PromotionService} from "./services/promotion.service";
 import {LeaderService} from "./services/leader.service";
 import {ProcessHTTPMsgService} from './services/process-httpmsg.service';
 import {FavoriteService} from './services/favorite.service';
+import {CouchbaseService} from './services/couchbase.service';
 import {baseURL} from './shared/baseurl';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -63,12 +64,13 @@ import {baseURL} from './shared/baseurl';
     ],
     entryComponents: [ReservationModalComponent, CommentComponent],
     providers: [
-        {provide: 'BaseURL', useValue: baseURL},
         DishService,
         PromotionService,
         LeaderService,
         FavoriteService,
-        ProcessHTTPMsgService
+        ProcessHTTPMsgService,
+        CouchbaseService,
+        {provide: 'BaseURL', useValue: baseURL}
     ],
     schemas: [
         NO_ERRORS_SCHEMA
