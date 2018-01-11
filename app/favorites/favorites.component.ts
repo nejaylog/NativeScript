@@ -7,6 +7,7 @@ import {ObservableArray} from 'tns-core-modules/data/observable-array';
 import {DrawerPage} from '../shared/drawer/drawer.page';
 import {confirm} from 'ui/dialogs';
 import {Toasty} from 'nativescript-toasty';
+import {View} from 'ui/core/view';
 
 @Component({
     selector: 'app-favorites',
@@ -72,11 +73,11 @@ export class FavoritesComponent extends DrawerPage implements OnInit {
         var swipeLimits = args.data.swipeLimits;
         var swipeView = args['object'];
 
-        var leftItem = swipeView.getViewById('mark-view');
-        var rightItem = swipeView.getViewById('delete-view');
-        // swipeLimits.left = leftItem.getMeasuredWidth();
-        // swipeLimits.right = rightItem.getMeasuredWidth();
-        // swipeLimits.threshold = leftItem.getMeasuredWidth() / 2;
+        var leftItem = swipeView.getViewById<View>('mark-view');
+        var rightItem = swipeView.getViewById<View>('delete-view');
+        swipeLimits.left = leftItem.getMeasuredWidth();
+        swipeLimits.right = rightItem.getMeasuredWidth();
+        swipeLimits.threshold = leftItem.getMeasuredWidth() / 2;
     }
 
     public onSwipeCellFinished(args: ListViewEventData) {

@@ -17,6 +17,7 @@ import {DrawerComponent} from './shared/drawer/drawer.component';
 import {FavoritesComponent} from './favorites/favorites.component';
 import {ReservationComponent} from './reservation/reservation.component';
 import {ReservationModalComponent} from './reservationmodal/reservationmodal.component';
+import {CommentComponent} from './comment/comment.component';
 
 import {DishService} from './services/dish.service';
 import {PromotionService} from "./services/promotion.service";
@@ -57,9 +58,10 @@ import {baseURL} from './shared/baseurl';
         DrawerComponent,
         FavoritesComponent,
         ReservationComponent,
-        ReservationModalComponent
+        ReservationModalComponent,
+        CommentComponent
     ],
-    entryComponents: [ReservationModalComponent],
+    entryComponents: [ReservationModalComponent, CommentComponent],
     providers: [
         {provide: 'BaseURL', useValue: baseURL},
         DishService,

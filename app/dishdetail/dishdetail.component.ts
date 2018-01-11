@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit, Inject, ViewContainerRef} from '@angular/core';
 import {Dish} from '../shared/dish';
 import {Comment} from '../shared/comment';
 import {DishService} from '../services/dish.service';
@@ -8,6 +8,9 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {RouterExtensions} from 'nativescript-angular/router';
 import {Toasty} from 'nativescript-toasty';
 import 'rxjs/add/operator/switchMap';
+import {action} from "ui/dialogs";
+import {ModalDialogService, ModalDialogOptions} from 'nativescript-angular/modal-dialog';
+import {CommentComponent} from '../comment/comment.component';
 
 @Component({
     selector: 'app-dishdetail',
@@ -25,8 +28,8 @@ export class DishdetailComponent implements OnInit {
 
     constructor(private dishservice: DishService, private route: ActivatedRoute,
                 private routerExtensions: RouterExtensions, private favoriteservice: FavoriteService,
-                private fonticon: TNSFontIconService, @Inject('BaseURL') private BaseURL) {
-
+                private fonticon: TNSFontIconService, @Inject('BaseURL') private BaseURL,
+                private modalService: ModalDialogService, private vcRef: ViewContainerRef) {
     }
 
     ngOnInit() {
@@ -57,5 +60,38 @@ export class DishdetailComponent implements OnInit {
 
     goBack(): void {
         this.routerExtensions.back();
+    }
+
+    displayActionDialog() {
+        let options = {
+            title: "Actions",
+            message: "Choose your action",
+            cancelButtonText: "Cancel",
+            actions: ["Add to Favorites", "Add Comment"]
+        };
+
+        action(options)
+            .then((result) => {
+                if (result == 'Add to Favorites') {
+                    this.addToFavorites();
+                } else if (result == 'Add Comment') {
+                    this.commentModalForm();
+                }
+            });
+    }
+
+    commentModalForm() {
+        let options: ModalDialogOptions = {
+            viewContainerRef: this.vcRef,
+            fullscreen: false
+        };
+
+        this.modalService.showModal(CommentComponent, options)
+            .then((comment) => {
+                // console.log(JSON.stringify(comment));
+                if (comment) {
+                    this.dish.comments.push(comment);
+                }
+        });
     }
 }
