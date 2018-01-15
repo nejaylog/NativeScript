@@ -7,8 +7,8 @@
             <drawer-content></drawer-content>
         </StackLayout>
     </ScrollView>
-    <ScrollView orientation="vertical" tkMainContent class="page">
-        <GridLayout class="m-5" rows="auto auto auto auto" columns="*, *" [formGroup]="reservation">
+    <StackLayout tkMainContent class="page">
+        <GridLayout id="commentCard" class="m-5" rows="auto auto auto auto" columns="*, *" [formGroup]="reservation">
             <Label class="h3 m-15" row="0" col="0" text="No. of Guests" textWrap="true"></Label>
             <TextField class="input input-border" id="textGuests" hint="Enter Number of Guests" [text]='' (tap)="createModalView('guest')"
                        (textChange)="onGuestChange($event)" row="0" col="1" formControlName="guests"></TextField>
@@ -20,5 +20,14 @@
                        (textChange)="onDateTimeChange($event)" row="2" col="1" formControlName="dateTime"></TextField>
             <Button class="btn btn-primary btn-active m-15" row="3" col="0" text="submit" (tap)="onSubmit()"></Button>
         </GridLayout>
-    </ScrollView>
+
+        <GridLayout id="listLayout" class="m-5" rows="auto auto auto auto" columns="*, *" [visibility]="showList ? 'visible' : 'collapsed'">
+            <Label class="h3 m-15" row="0" col="0" text="No. of Guests" textWrap="true"></Label>
+            <Label class="h3 m-15" row="0" col="1" [text]="reservationValue.guests" textWrap="true"></Label>
+            <Label class="h3 m-15" row="1" col="0" text="Smoking?" textWrap="true"></Label>
+            <Label class="h3 m-15" row="1" col="1" [text]="reservationValue.smoking" textWrap="true"></Label>
+            <Label class="h3 m-15" row="2" col="0" text="Date and Time" textWrap="true"></Label>
+            <Label class="h3 m-15" row="2" col="1" [text]="reservationValue.dateTime | date" textWrap="true"></Label>
+        </GridLayout>
+    </StackLayout>
 </RadSideDrawer>

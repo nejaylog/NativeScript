@@ -5,6 +5,10 @@ import {Switch} from 'ui/switch';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import {ModalDialogService, ModalDialogOptions} from 'nativescript-angular/modal-dialog';
 import {ReservationModalComponent} from '../reservationmodal/reservationmodal.component';
+import {Page} from 'ui/page';
+import {View} from 'ui/core/view';
+import * as enums from 'ui/enums';
+import {CouchbaseService} from "../services/couchbase.service";
 
 @Component({
     selector: 'app-reservation',
@@ -14,16 +18,31 @@ import {ReservationModalComponent} from '../reservationmodal/reservationmodal.co
 export class ReservationComponent extends DrawerPage implements OnInit {
 
     reservation: FormGroup;
+    showList: boolean = false;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef, private formBuilder: FormBuilder,
-                private modalService: ModalDialogService, private vcRef: ViewContainerRef) {
+    formLayout: View;
+    listLayout: View;
+    reservationValue: null;
+
+    reservations: Array<number>;
+    docId: string = "reservations";
+
+    constructor(private changeDetectorRef: ChangeDetectorRef,
+                private formBuilder: FormBuilder,
+                private modalService: ModalDialogService,
+                private vcRef: ViewContainerRef,
+                private page: Page,
+                private couchbaseservice: CouchbaseService) {
         super(changeDetectorRef);
-
         this.reservation = this.formBuilder.group({
             guests: 3,
             smoking: false,
             dateTime: ['', Validators.required]
         });
+
+        this.reservationValue = this.reservation.value;
+
+        this.reservations = [];
     }
 
     ngOnInit() {
@@ -59,10 +78,6 @@ export class ReservationComponent extends DrawerPage implements OnInit {
         });
     }
 
-    onSubmit() {
-        console.log(JSON.stringify(this.reservation.value));
-    }
-
     createModalView(args) {
         let options: ModalDialogOptions = {
             viewContainerRef: this.vcRef,
@@ -81,6 +96,48 @@ export class ReservationComponent extends DrawerPage implements OnInit {
                         dateTime: result
                     });
                 }
+            });
+    }
+
+    onSubmit() {
+        this.formLayout = <View>this.page.getViewById<View>("formLayout");
+        this.listLayout = <View>this.page.getViewById<View>("listLayout");
+        this.reservationValue = this.reservation.value;
+        this.showList = true;
+        this.animateForm();
+
+        let doc = this.couchbaseservice.getDocument(this.docId);
+        if (doc == null) {
+            console.log("This is the first reservation");
+            this.couchbaseservice.createDocument({ "reservations": this.reservationValue }, this.docId);
+            console.log(JSON.stringify(this.couchbaseservice.getDocument(this.docId)));
+        }
+        else {
+            this.reservations.push(doc.reservations);
+            this.reservations.push(this.reservationValue);
+            this.couchbaseservice.updateDocument(this.docId, { "reservations": this.reservations });
+            console.log(JSON.stringify(this.couchbaseservice.getDocument(this.docId)));
+        }
+
+    }
+
+    animateForm() {
+        this.listLayout.animate({
+            scale: { x: 0, y: 0 },
+            opacity: 0,
+            duration: 0
+        });
+        this.formLayout.animate({
+            scale: { x: 0, y: 0 },
+            opacity: 0,
+            duration: 500
+        })
+            .then(() => {
+                this.listLayout.animate({
+                    scale: { x: 1, y: 1 },
+                    opacity: 1,
+                    duration: 500
+                })
             });
     }
 }
