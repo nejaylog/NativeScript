@@ -26,6 +26,7 @@ import {LeaderService} from "./services/leader.service";
 import {ProcessHTTPMsgService} from './services/process-httpmsg.service';
 import {FavoriteService} from './services/favorite.service';
 import {CouchbaseService} from './services/couchbase.service';
+import {PlatformService} from './services/platform.service';
 import {baseURL} from './shared/baseurl';
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
@@ -72,6 +73,7 @@ import {baseURL} from './shared/baseurl';
         FavoriteService,
         ProcessHTTPMsgService,
         CouchbaseService,
+        PlatformService,
         {provide: 'BaseURL', useValue: baseURL}
     ],
     schemas: [
